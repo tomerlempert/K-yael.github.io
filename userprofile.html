@@ -1,0 +1,340 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script src="DatabaseHandling.js"></script>
+    <script src="firebase.js"></script>
+    <!-- firebase -->
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+
+    <!-- costum css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- costum css -->
+
+
+    <script>
+
+        initializeFirebase();
+
+    </script>
+
+    <!-- if user not logged in -->
+    <script>
+
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+
+            }
+            else {
+                window.location.replace("Login.html");
+            }
+
+
+        });
+    </script>
+    <!-- if user not logged in -->
+
+
+</head>
+
+<body class="cover">
+    <div class="content">
+        <!-- navigation bar -->
+        <div id="mySidenav" class="sidenav">
+            <p style="position: absolute; color: whitesmoke; top: 1px; left: 33px; font-size: 34px;">תפריט</p>
+
+            <a href="javascript:void(0)" class="closebtn clickanamation" onclick="closeNav()">&times;</a>
+            <a href="index.html" class="clickanamation ">דף בית</a>
+            <a href="userprofile.html" class="clickanamation visitpage">פרופיל</a>
+            <a href="rescu.html" class="clickanamation">תרגולות</a>
+            <a href="generalinfo.html" class="clickanamation">מידע כללי</a>
+            <a href="gant.html" class="clickanamation"> גאנט סגירות</a>
+
+        </div>
+        <!-- navigation bar -->
+
+
+
+        <div class="jumbotron curvy" style="text-align: center; margin-bottom: 0px; background-color:#343a40">
+
+            <!-- navigation bar -->
+            <span class="navhamburger clickanamation" onclick="openNav()">&#9776; </span>
+            <!-- navigation bar -->
+
+
+            <i class="fas fa-sign-out-alt clickanamation" style="font-size: 23px; position: absolute;left: 9px; color: #e8edf5;" onclick="logout()"></i>
+
+
+
+
+            <h1 style=" color: #E9EFF6; display: inline-block;"> קריאת יעל</h1>
+            <p style=" color: #f3f3f3; opacity: .6; font-size: 16px; font-weight: 100; margin-bottom: 0rem;">" הרים הגבוהים ליעלים, סלעים מחסה לשפנים "</p>
+        </div>
+
+
+
+
+
+
+        <div class="lds-roller centered" id="loader" style="top: 45%;">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+
+        <div class="profile" id="readytoload" style="margin-top: 25%; display: none ">
+
+
+
+
+            <h1 id="try1" class="name"></h1>
+            <i class="fas fa-edit clickanamation" style="color: white; margin-left: 80%; top: 24px; position: relative; " onclick="fieldvisteam()"></i>
+            <p id="try2" class="title-team "></p>
+            <i class="fas fa-edit clickanamation" style="color: white; margin-left: 80%;top: 24px; position: relative;" onclick="fieldvisphone()"></i>
+            <p class="phone" id="try3" style="color: #bbbcd2;  font-size: 20px;  margin-bottom: 10px; "></p>
+        </div>
+        <div id="divteam" class="centered openanimationc_nodelay" style="display: none; text-align: right; margin-top: 70px; top: 7%; position: relative;  width: 220px; height: 150px;">
+            <input type="text" id="team" class="form-control centered" onfocus="focusfunc()" style="text-align: right;" placeholder="צוות"
+                required="">
+
+
+            <button id="teambutton" class="btn btn-lg btn-primary btn-block" onclick="updateteam()" style="position: relative; top: 90%; color: white;">עדכן</button>
+        </div>
+        <div id="divphone" class="centered openanimationc_nodelay" style="display: none; text-align: right; margin-top: 70px; top: 7%; position: relative;  width: 220px; height: 150px;">
+            <input type="tel" id="user_phone" class="form-control centered" onfocus="focusfunc()" style="text-align: right;" placeholder="מספר טלפון"
+                required="">
+
+
+            <button id="phonebutton" class="btn btn-lg btn-primary btn-block" onclick="updatephone()" style="position: relative; top: 90%; color: white;">עדכן</button>
+        </div>
+
+
+
+    </div>
+    <footer>
+        <div class="footer" id="footer" style="display: block">
+            <p style="margin-bottom: 0px;padding-top: 7px;"> תומר למפרט - צוות פקאן &copy;</p>
+        </div>
+    </footer>
+
+
+
+
+
+    <script src="DatabaseHandling.js"></script>
+
+    <script>
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                getUser(user.uid)
+                    .then(function (user) {
+                        document.getElementById("readytoload").style.display = "block";
+                        document.getElementById("loader").style.display = "none";
+                        // document.getElementById("readytoload2").style.display = "block";
+                        document.getElementById("try1").innerHTML = user.name;
+                        document.getElementById("try2").innerHTML = user.team;
+                        document.getElementById("try3").innerHTML = user.phoneNumber;
+                    });
+            }
+            else {
+
+            }
+        });
+
+
+        function fieldvisteam() {
+            if (document.getElementById("divphone").style.display == "none") {
+                document.getElementById("divteam").style.display = "block"
+            }
+            if (document.getElementById("divphone").style.display == "block") {
+                document.getElementById("divphone").style.display = "none";
+                document.getElementById("divteam").style.display = "block";
+
+            }
+
+        }
+        function fieldvisphone() {
+            if (document.getElementById("divteam").style.display == "none") {
+
+                document.getElementById("divphone").style.display = "block";
+
+            }
+            if (document.getElementById("divteam").style.display == "block") {
+                document.getElementById("divteam").style.display = "none";
+                document.getElementById("divphone").style.display = "block";
+
+            }
+
+        }
+
+        function updatephone() {
+
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    getUser(user.uid)
+                        .then(function (user) {
+
+                            if (phonevald() == true) {
+                                var threechar = document.getElementById("user_phone").value.slice(0, 3);
+                                var restnumber = document.getElementById("user_phone").value.slice(3, 11);
+                                var phoneNumber = threechar + "-" + restnumber;
+                                var displayname = user.name;
+                                var team = user.team;
+                                var user = firebase.auth().currentUser;
+                                var userUID = user.uid;
+                                edituser(userUID, displayname, team, phoneNumber);
+                            }
+                            else {
+                                //  document.getElementById('validation_notes').innerHTML = " **  מספר טלפון חייב להכיל רק מספרים  ";
+                                document.getElementById("user_phone").style.border = "3px solid #dc3545";
+
+                            }
+                        });
+                }
+            });
+        }
+        function updateteam() {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    getUser(user.uid)
+                        .then(function (user) {
+
+                            if (teamvald() == true) {
+
+
+                                var phoneNumber = user.phoneNumber;
+                                var displayname = user.name;
+                                var team = "צוות" + " " + document.getElementById("team").value;
+                                var user = firebase.auth().currentUser;
+                                var userUID = user.uid;
+                                edituser(userUID, displayname, team, phoneNumber);
+                            }
+                            else {
+                                document.getElementById("team").style.border = "3px solid #dc3545";
+
+                            }
+                        });
+                }
+            });
+        }
+
+        function phonevald() {
+            var i = 0;
+            var k = 0;
+            var nosign = "-_/:;׳!@#$%^&*()+=";
+            var userphone = document.getElementById("user_phone").value;
+            for (i = 0; i < userphone.length; i++) {
+
+
+
+                if (isNaN(userphone.charAt(i))) {
+
+
+                    return false;
+
+
+
+                }
+                if (userphone.length != 10) {
+                    return false;
+
+                }
+            }
+            return true;
+        }
+        function teamvald() {
+            var i = 0;
+            var k = 0;
+            var nosign = "-_/:;׳!@#$%^&*()+=1234567890";
+            var userteam = document.getElementById("team").value;
+            // iligale sign user team
+            for (i = 0; i < userteam.length; i++) {
+                for (k = 0; k < nosign.length; k++) {
+
+
+                    if (userteam.charAt(i) == nosign.charAt(k)) {
+
+
+                        return false;
+
+
+                    }
+
+
+
+                }
+
+            }
+            return true;
+        }
+        function focusfunc() {
+            if (document.getElementById("user_phone").style.border != '') {
+
+
+                document.getElementById("user_phone").style.border = '';
+                document.getElementById("user_phone").value = '';
+
+            }
+
+            if (document.getElementById("team").style.border != '') {
+
+
+                document.getElementById("team").style.border = '';
+                document.getElementById("team").value = '';
+
+            }
+
+
+        }
+
+    </script>
+    <!-- navigation bar -->
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "200px";
+            document.getElementById("mySidenav").style.opacity = "1";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("mySidenav").style.opacity = "0";
+        }
+    </script>
+    <!-- navigation bar -->
+
+
+</body>
+
+
+</html>

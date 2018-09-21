@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script src="DatabaseHandling.js"></script>
+    <script src="firebase.js"></script>
+    <!-- firebase -->
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+
+    <!-- costum css -->
+    <link rel="stylesheet" href="style.css">
+
+
+    <!-- costum css -->
+
+
+    <script>
+
+        initializeFirebase();
+
+    </script>
+    <!-- if user not logged in -->
+    <script>
+
+
+        firebase.auth().onAuthStateChanged(function (user) {
+
+            // get acsess to gantmaster
+            if (user) {
+                var userid = firebase.auth().currentUser.uid;
+                getUser(userid)
+
+                    .then(function (user) {
+                        if (user.name == "תומר למפרט" || "נתנאל אלמליח" || "נתנאל אהרון") {
+                            document.getElementById("gantmaster").style.display = "block";
+                        }
+
+                    });
+
+
+            }
+            // get acsess to gantmaster
+            else {
+                window.location.replace("Login.html");
+            }
+
+
+        });
+
+    </script>
+    <!-- if user not logged in -->
+</head>
+
+<body class="cover" id="body">
+    <div class="content">
+        <!-- navigation bar -->
+        <!-- navigation bar -->
+        <div id="mySidenav" class="sidenav">
+            <p style="position: absolute; color: whitesmoke; top: 1px; left: 33px; font-size: 34px;">תפריט</p>
+
+            <a href="javascript:void(0)" class="closebtn clickanamation" onclick="closeNav()">&times;</a>
+            <a href="index.html" class="clickanamation ">דף בית</a>
+            <a href="userprofile.html" class="clickanamation">פרופיל</a>
+            <a href="rescu.html" class="clickanamation">תרגולות</a>
+            <a href="generalinfo.html" class="clickanamation">מידע כללי</a>
+            <a href="gant.html" class="clickanamation visitpage"> גאנט סגירות</a>
+            <a href="gantmaster.html" class="clickanamation" id="gantmaster" style="display: none"> עדכוון גאנט</a>
+
+        </div>
+        <!-- navigation bar -->
+
+        <!-- navigation bar -->
+
+
+
+        <div class="jumbotron curvy" style="text-align: center; margin-bottom: 0px; background-color:#343a40">
+
+            <!-- navigation bar -->
+            <span class="navhamburger clickanamation" onclick="openNav()">&#9776; </span>
+            <!-- navigation bar -->
+
+            <!-- logout -->
+            <i class="fas fa-sign-out-alt clickanamation" style="font-size: 23px; position: absolute;left: 9px; color: #e8edf5;" onclick="logout()"></i>
+            <!-- logout -->
+
+
+            <h1 style=" color: #E9EFF6; display: inline-block;" class="clickanamation"> קריאת יעל</h1>
+            <p style=" color: #f3f3f3; opacity: .6; font-size: 16px; font-weight: 100; margin-bottom: 0rem;">" הרים הגבוהים ליעלים, סלעים מחסה לשפנים "</p>
+        </div>
+
+        <div class="lds-roller centered" id="loader" style="top: 45%;">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+
+        <div id="holethingdiv" class="openanimationc" style="display: none;">
+            <div class="container month">
+                <ul>
+                    <li class="prev clickanamation" id="prev" onclick="monthbackward();">&#10094;</li>
+                    <li class="next clickanamation" id="next" onclick="monthforward();">&#10095;</li>
+                    <li id="monthid"></li>
+                    <li id="yearli">2018</li>
+                </ul>
+            </div>
+
+
+
+            <div class="" id="slide">
+
+                <div class="container week">
+
+
+                    <div style="text-align: center;">
+                        <h1 id="weekid1" class="week_num" style="display: inline-block"> </h1>
+                        <h1 class="week_num" style="display: inline-block; padding-left: 6px">שבוע </h1>
+                    </div>
+
+                    <h1 class="title" style="margin-bottom: 13px; font-size: 20px">מפקד</h1>
+                    <h1 class="name" id="commander1" style="margin-bottom: 20px;font-size: 30px"> </h1>
+                </div>
+
+
+                <div class="container week">
+
+
+                    <div style="text-align: center;">
+                        <h1 id="weekid2" class="week_num" style="display: inline-block"> </h1>
+                        <h1 class="week_num" style="display: inline-block; padding-left: 6px">שבוע </h1>
+                    </div>
+
+                    <h1 class="title" style="margin-bottom: 13px; font-size: 20px">מפקד</h1>
+                    <h1 class="name" id="commander2" style="margin-bottom: 20px;font-size: 30px"> </h1>
+                </div>
+
+                <div class="container week">
+
+
+                    <div style="text-align: center;">
+                        <h1 id="weekid3" class="week_num" style="display: inline-block"> </h1>
+                        <h1 class="week_num" style="display: inline-block; padding-left: 6px">שבוע </h1>
+                    </div>
+
+                    <h1 class="title" style="margin-bottom: 13px; font-size: 20px">מפקד</h1>
+                    <h1 class="name" id="commander3" style="margin-bottom: 20px;font-size: 30px"> </h1>
+                </div>
+
+                <div class="container week">
+
+
+                    <div style="text-align: center;">
+                        <h1 id="weekid4" class="week_num" style="display: inline-block"> </h1>
+                        <h1 class="week_num" style="display: inline-block; padding-left: 6px">שבוע </h1>
+                    </div>
+
+                    <h1 class="title" style="margin-bottom: 13px; font-size: 20px">מפקד</h1>
+                    <h1 class="name" id="commander4" style="margin-bottom: 20px;font-size: 30px"> </h1>
+                </div>
+
+                <div id="weekid5div" class="container week">
+
+
+                    <div style="text-align: center;">
+                        <h1 id="weekid5" class="week_num" style="display: inline-block"> </h1>
+                        <h1 class="week_num" style="display: inline-block; padding-left: 6px">שבוע </h1>
+                    </div>
+
+                    <h1 class="title" style="margin-bottom: 13px; font-size: 20px">מפקד</h1>
+                    <h1 class="name" id="commander5" style="margin-bottom: 20px;font-size: 30px"> </h1>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer" id="footer" style="display: none;">
+            <p style="margin-bottom: 0px;padding-top: 7px;"> תומר למפרט - צוות פקאן &copy;</p>
+        </div>
+    </footer>
+    <script>
+        function redalert(id) {
+            document.getElementById(id).style.color = "red";
+
+        }
+
+    </script>
+
+
+    <script>
+
+
+        var arry_month = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
+
+
+        var d = new Date();
+        var m = d.getMonth();
+
+        var counter = m;
+        var y = d.getFullYear();
+        var ycounter = y;
+        document.getElementById("monthid").innerHTML = arry_month[m];
+        document.getElementById("yearli").innerHTML = y;
+        everymonth_weeks();
+
+        function slideoutleft() {
+            document.getElementById("slide").classList.add("slide-out-left");
+            document.getElementById("body").classList.add("fixthemontnext");
+        }
+        function slideoutright() {
+            document.getElementById("slide").classList.add("slide-out-right");
+        }
+        function slideinleft() {
+            document.getElementById("slide").classList.add("slide-in-left");
+
+        }
+        function slideinright() {
+            document.getElementById("slide").classList.add("slide-in-right");
+        }
+        function removeclassforward() {
+            document.getElementById("slide").classList.remove("slide-out-left");
+            document.getElementById("slide").classList.remove("slide-in-right");
+            document.getElementById("body").classList.remove("fixthemontnext");
+        }
+        function removeclassbackward() {
+            document.getElementById("slide").classList.remove("slide-out-right");
+            document.getElementById("slide").classList.remove("slide-in-left");
+        }
+        function monthforward() {
+
+            slideoutleft();
+            setTimeout(slideinright, 250);
+            setTimeout(removeclassforward, 800);
+
+            var yearli = document.getElementById("yearli").innerHTML;
+
+            counter = counter + 1
+
+            var currentmonth = document.getElementById("monthid").innerHTML;
+
+            if (currentmonth == "דצמבר") {
+                counter = 0;
+                ycounter = ycounter + 1;
+
+                document.getElementById("monthid").innerHTML = arry_month[counter];
+                document.getElementById("yearli").innerHTML = ycounter;
+                everymonth_weeks();
+
+            }
+            if (ycounter == 2020) {
+                counter = m;
+                ycounter = y;
+
+                document.getElementById("monthid").innerHTML = arry_month[counter];
+                document.getElementById("yearli").innerHTML = ycounter;
+                everymonth_weeks();
+            }
+            document.getElementById("monthid").innerHTML = arry_month[counter];
+            everymonth_weeks();
+
+        }
+
+        function monthbackward() {
+            var currentmonth = document.getElementById("monthid").innerHTML;
+            var currentmonth_index = arry_month.indexOf(currentmonth);
+            if (currentmonth_index != m) {
+                slideoutright();
+                setTimeout(slideinleft, 250);
+                setTimeout(removeclassbackward, 800);
+
+            }
+            if (currentmonth_index == m) {
+                var id = "prev";
+                redalert(id);
+                setTimeout(function () { document.getElementById(id).style.color = "white"; }, 250);
+            }
+            counter = counter - 1;
+
+            if (currentmonth == "ינואר") {
+                counter = 11
+                ycounter = y;
+                document.getElementById("monthid").innerHTML = arry_month[counter];
+                document.getElementById("yearli").innerHTML = ycounter;
+                everymonth_weeks();
+            }
+            if (ycounter == y && currentmonth_index == m) {
+                counter = m;
+                ycounter = y;
+
+                document.getElementById("monthid").innerHTML = arry_month[counter];
+                document.getElementById("yearli").innerHTML = ycounter;
+                everymonth_weeks();
+            }
+            document.getElementById("monthid").innerHTML = arry_month[counter];
+            everymonth_weeks();
+
+        }
+        // function commanderfunc(week1, week2, week3, week4, week5)
+        function commanderfunc() {
+            var week1 = document.getElementById("weekid1").innerHTML;
+            var week2 = document.getElementById("weekid2").innerHTML;
+            var week3 = document.getElementById("weekid3").innerHTML;
+            var week4 = document.getElementById("weekid4").innerHTML;
+            var week5 = document.getElementById("weekid5").innerHTML;
+
+            getSoger(week1)
+                .then(function (sogerData) {
+                    // alert(sogerData);
+                    document.getElementById("commander1").innerHTML = sogerData.name;
+
+                    document.getElementById("holethingdiv").style.display = "block";
+                    document.getElementById("footer").style.display = "block";
+                    document.getElementById("loader").style.display = "none";
+                });
+            getSoger(week2)
+                .then(function (sogerData) {
+                    document.getElementById("commander2").innerHTML = sogerData.name;
+                });
+            getSoger(week3)
+                .then(function (sogerData) {
+                    document.getElementById("commander3").innerHTML = sogerData.name;
+                });
+            getSoger(week4)
+                .then(function (sogerData) {
+                    document.getElementById("commander4").innerHTML = sogerData.name;
+                });
+            if (week5 != null) {
+                getSoger(week5)
+                    .then(function (sogerData) {
+                        document.getElementById("commander5").innerHTML = sogerData.name;
+                    });
+            }
+        }
+        function everymonth_weeks() {
+            var currentmonth = document.getElementById("monthid").innerHTML;
+
+
+            if (currentmonth == "ספטמבר") {
+                document.getElementById("weekid1").innerHTML = "36";
+                document.getElementById("weekid2").innerHTML = "37";
+                document.getElementById("weekid3").innerHTML = "38";
+                document.getElementById("weekid4").innerHTML = "39";
+                document.getElementById("weekid5").innerHTML = "40";
+                document.getElementById("weekid5div").style.display = "block";
+                // document.getElementById("holethingdiv").classList.add("openanimationc");
+
+
+
+            }
+            if (currentmonth == "אוקטובר") {
+                var week1 = 6;
+                var week2 = 7;
+                var week3 = 8;
+                var week4 = 9;
+                var week5 = null;
+                commanderfunc(week1, week2, week3, week4, week5);
+
+                document.getElementById("weekid1").innerHTML = "41";
+                document.getElementById("weekid2").innerHTML = "42";
+                document.getElementById("weekid3").innerHTML = "43";
+                document.getElementById("weekid4").innerHTML = "44";
+                document.getElementById("weekid5div").style.display = "none";
+
+
+            }
+            if (currentmonth == "נובמבר") {
+                document.getElementById("weekid1").innerHTML = "45";
+                document.getElementById("weekid2").innerHTML = "46";
+                document.getElementById("weekid3").innerHTML = "47";
+                document.getElementById("weekid4").innerHTML = "48";
+                document.getElementById("weekid5div").style.display = "none";
+
+
+            }
+            if (currentmonth == "דצמבר") {
+                document.getElementById("weekid1").innerHTML = "49";
+                document.getElementById("weekid2").innerHTML = "50";
+                document.getElementById("weekid3").innerHTML = "51";
+                document.getElementById("weekid4").innerHTML = "52";
+                document.getElementById("weekid5").innerHTML = "1";
+                document.getElementById("weekid5div").style.display = "block";
+
+
+            }
+            if (currentmonth == "ינואר") {
+                document.getElementById("weekid1").innerHTML = "2";
+                document.getElementById("weekid2").innerHTML = "3";
+                document.getElementById("weekid3").innerHTML = "4";
+                document.getElementById("weekid4").innerHTML = "5";
+                document.getElementById("weekid5div").style.display = "none";
+
+
+            }
+            if (currentmonth == "פברואר") {
+                document.getElementById("weekid1").innerHTML = "6";
+                document.getElementById("weekid2").innerHTML = "7";
+                document.getElementById("weekid3").innerHTML = "8";
+                document.getElementById("weekid4").innerHTML = "9";
+                document.getElementById("weekid5div").style.display = "none";
+
+
+            }
+            if (currentmonth == "מרץ") {
+                document.getElementById("weekid1").innerHTML = "10";
+                document.getElementById("weekid2").innerHTML = "11";
+                document.getElementById("weekid3").innerHTML = "12";
+                document.getElementById("weekid4").innerHTML = "13";
+                document.getElementById("weekid5").innerHTML = "14";
+                document.getElementById("weekid5div").style.display = "block";
+
+
+            }
+            if (currentmonth == "אפריל") {
+                document.getElementById("weekid1").innerHTML = "15";
+                document.getElementById("weekid2").innerHTML = "16";
+                document.getElementById("weekid3").innerHTML = "17";
+                document.getElementById("weekid4").innerHTML = "18";
+                document.getElementById("weekid5div").style.display = "none";
+
+
+            }
+            if (currentmonth == "מאי") {
+                document.getElementById("weekid1").innerHTML = "19";
+                document.getElementById("weekid2").innerHTML = "20";
+                document.getElementById("weekid3").innerHTML = "21";
+                document.getElementById("weekid4").innerHTML = "22";
+                document.getElementById("weekid5div").style.display = "none";
+
+
+            }
+            if (currentmonth == "יוני") {
+                document.getElementById("weekid1").innerHTML = "23";
+                document.getElementById("weekid2").innerHTML = "24";
+                document.getElementById("weekid3").innerHTML = "25";
+                document.getElementById("weekid4").innerHTML = "26";
+                document.getElementById("weekid5").innerHTML = "27";
+                document.getElementById("weekid5div").style.display = "block";
+
+
+            }
+            if (currentmonth == "יולי") {
+                document.getElementById("weekid1").innerHTML = "28";
+                document.getElementById("weekid2").innerHTML = "29";
+                document.getElementById("weekid3").innerHTML = "30";
+                document.getElementById("weekid4").innerHTML = "31";
+                document.getElementById("weekid5div").style.display = "none";
+
+
+            }
+            commanderfunc();
+        }
+
+    </script>
+
+
+    <!-- navigation bar -->
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "200px";
+            document.getElementById("mySidenav").style.opacity = "1";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("mySidenav").style.opacity = "0";
+        }
+    </script>
+    <!-- navigation bar -->
+
+</html>

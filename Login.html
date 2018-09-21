@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- firebase -->
+  <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+  <script src="DatabaseHandling.js"></script>
+  <script src="firebase.js"></script>
+  <!-- firebase -->
+
+  <!-- Bootstrap -->
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <!-- Bootstrap -->
+
+  <!-- Font Awesome JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
+  <!-- Font Awesome JS -->
+
+  <!-- costum css -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- costum css -->
+
+
+  <script>
+
+    initializeFirebase();
+
+  </script>
+  <script>
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        //const userUID = user.uid;
+        // User is signed in.
+        //alert('welcome');
+        window.location.replace("index.html");
+      }
+
+    });
+  </script>
+</head>
+
+<body class="cover">
+  <div class="content">
+    <!-- navigation bar -->
+    <div id="mySidenav" class="sidenav">
+      <p style="position: absolute; color: whitesmoke; top: 1px; left: 33px; font-size: 34px;">תפריט</p>
+
+      <a href="javascript:void(0)" class="closebtn clickanamation" onclick="closeNav()">&times;</a>
+      <a href="#" class="clickanamation visitpage">התחברות</a>
+      <a href="Register.html" class="clickanamation">הרשמה</a>
+      <!-- <a href="#">מידע כללי</a>
+    <a href="#">דרכי חילוץ</a>
+    <a href="#">תפקידים</a> -->
+
+    </div>
+    <!-- navigation bar -->
+
+
+
+    <div class="jumbotron curvy" style="text-align: center; margin-bottom: 0px; background-color:#343a40">
+
+      <!-- navigation bar -->
+      <span class="navhamburger clickanamation" onclick="openNav()">&#9776; </span>
+      <!-- navigation bar -->
+
+
+
+      <h1 style=" color: #E9EFF6; display: inline-block;"> קריאת יעל</h1>
+      <p style=" color: #f3f3f3; opacity: .6; font-size: 16px; font-weight: 100; margin-bottom: 0rem;">" הרים הגבוהים ליעלים, סלעים מחסה לשפנים "</p>
+    </div>
+
+    <div class="form-style centered openanimationc" style="width: 250px; position: absolute; top: 50%;">
+
+      <!-- <div class="form-style" style="width: 250px; position: relative;transform: translate(-50%, -50%); left: 50%; margin-top: 50%;"> -->
+
+      <h1 style=" color: #E9EFF6; text-align: center;padding-bottom: 20px;">התחבר</h1>
+
+      <input class="form-control" type="text" id="user" style="text-align: right; margin-top: 20px; margin-bottom: 35px;" placeholder="שם משתמש"
+        required="" onfocus="focusfunc()">
+
+      <input class="form-control" type="password" id="pass" style="text-align: right; margin-top: 20px; margin-bottom: 35px; "
+        placeholder="סיסמה" required="">
+
+      <button id="logInBtn" class="btn btn-lg btn-primary btn-block" style="margin-top: 26px; color: white">שלח</button>
+      <p class="centered" id="validation_notes" style="position: fixed; text-align: center; font-size: 20px; visibility: hidden; top: 115%; width: 200px; color: #E9EFF6;">שם משתמש או סיסמה אינם נכונים</p>
+
+
+
+    </div>
+  </div>
+  <footer>
+    <div class="footer" id="footer">
+      <p style="margin-bottom: 0px;padding-top: 7px;"> תומר למפרט - צוות פקאן &copy;</p>
+    </div>
+  </footer>
+
+</body>
+
+
+
+<script>
+  document.getElementById("logInBtn").addEventListener("click", function () { Login(); });
+
+            // check if the user is sign in or not
+
+
+</script>
+<script>
+
+  function focusfunc() {
+    if (document.getElementById('user').value == '' || document.getElementById("validation_notes").style.visibility == "visible") {
+
+      document.getElementById("validation_notes").style.visibility = "hidden";
+      document.getElementById('user').value = ''
+      document.getElementById('pass').value = ''
+    }
+  }
+</script>
+<!-- navigation bar -->
+
+<script>
+  function openNav() {
+    document.getElementById("mySidenav").style.width = "200px";
+    document.getElementById("mySidenav").style.opacity = "1";
+  }
+
+  function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("mySidenav").style.opacity = "0";
+  }
+</script>
+<!-- navigation bar -->
+
+</html>

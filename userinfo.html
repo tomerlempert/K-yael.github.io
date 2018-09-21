@@ -1,0 +1,287 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script src="DatabaseHandling.js"></script>
+    <script src="firebase.js"></script>
+    <!-- firebase -->
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+
+    <!-- costum css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- costum css -->
+
+
+    <script>
+
+        initializeFirebase();
+       
+    </script>
+
+
+
+
+</head>
+
+<body class="cover">
+
+    
+
+
+
+    <div class="jumbotron curvy" style="text-align: center; margin-bottom: 0px; background-color:#343a40">
+
+        <!-- navigation bar -->
+
+        <!-- navigation bar -->
+
+
+
+
+
+
+        <h1 style=" color: #E9EFF6; display: inline-block;"> קריאת יעל</h1>
+        <p style=" color: #f3f3f3; opacity: .6; font-size: 16px; font-weight: 100; margin-bottom: 0rem;">" הרים הגבוהים ליעלים, סלעים מחסה לשפנים "</p>
+    </div>
+
+
+
+    <div class="form-style centered" style="width: 250px; position: relative; top: 40%;">
+        <!-- <div class="form-style" style="width: 250px; position: relative;transform: translate(-50%, -50%); left: 50%;  margin-top: 400px;"> -->
+        <p style="width: 250px; color: #E9EFF6; position: relative; left: 12px; font-size: 27px;">מילוי פרטים אישיים</p>
+
+        <input type="text" id="username" class="form-control" onfocus="focusfunc()" style="text-align: right; margin-top: 30px;" placeholder="שם פרטי"
+            required="">
+        <input type="text" id="user_last_name" class="form-control" onfocus="focusfunc()" style="text-align: right; margin-top: 30px;" placeholder="שם משפחה"
+            required="">
+        <input type="tel" id="user_phone" class="form-control" onfocus="focusfunc()" style="text-align: right; margin-top: 30px;" placeholder="מספר טלפון"
+            required="">
+        <input type="text" id="team" class="form-control" onfocus="focusfunc()" style="text-align: right; margin-top: 30px;" placeholder="שם הצוות" required="">
+
+        <button onclick="validation()" class="btn btn-lg btn-primary btn-block" style="margin-top: 40px; color: white;">שלח</button>
+        <p id="validation_notes" style="width: 300px; color: #E9EFF6; position: absolute; font-size: 20px;"> </p>
+        <!-- <h1 id="try1"></h1>
+        <h1 id="try2"></h1>
+        <h1 id="try3">dfgfdgdf</h1> -->
+
+
+    </div>
+
+
+
+</body>
+
+
+
+<script src="DatabaseHandling.js"></script>
+
+<script>
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            getUser(user.uid)
+                .then(function (user) {
+                    if (user.name != "" || user.team != "" || user.phoneNumber != "") {
+
+                         window.location.replace("index.html");
+                    }
+
+                    
+                });
+        }
+        else {
+        
+        }
+    });
+    function focusfunc() {
+ if (document.getElementById("user_phone").style.border != ''){
+
+    
+     document.getElementById("user_phone").style.border = '';
+     document.getElementById("user_phone").value = '';
+    
+}
+if (document.getElementById("username").style.border != ''){
+
+    
+document.getElementById("username").style.border = '';
+document.getElementById("username").value = '';
+
+}
+if (document.getElementById("user_last_name").style.border != ''){
+
+    
+document.getElementById("user_last_name").style.border = '';
+document.getElementById("user_last_name").value = '';
+
+}
+if (document.getElementById("team").style.border != ''){
+
+    
+document.getElementById("team").style.border = '';
+document.getElementById("team").value = '';
+
+}
+
+
+}
+
+ 
+
+    function validation() {
+
+        var username = document.getElementById('username').value;
+        var userlast = document.getElementById('user_last_name').value;
+        var userphone = document.getElementById('user_phone').value;
+        var userteam = document.getElementById('team').value;
+
+
+        var i = 0;
+        var k = 0;
+        var nosign = ";:-_/׳!@#$%^&*()+=1234567890";
+        var nosignname = ";:-_/׳!@#$%^&*() +=1234567890";
+
+        // empty fileds 
+        if (username == "" || userlast == "" || userphone == "" || userteam == "") {
+            document.getElementById('validation_notes').innerHTML = " ** למלא את כל הפרטים";
+
+
+            return false;
+        }
+        // iligale sign user name
+        for (i = 0; i < username.length; i++) {
+            for (k = 0; k < nosignname.length; k++) {
+
+                if (username.charAt(i) == nosignname.charAt(k)) {
+                    document.getElementById("username").style.border = "3px solid #dc3545";
+                    document.getElementById('validation_notes').innerHTML = " **  שם מכיל אות לא חוקית  ";
+                    return false;
+                }
+            }
+        }
+        var i = 0;
+        var k = 0;
+
+
+        // iligale sign user last name
+        for (i = 0; i < userlast.length; i++) {
+            for (k = 0; k < nosign.length; k++) {
+
+                if (userlast.charAt(i) == nosign.charAt(k)) {
+                    document.getElementById("user_last_name").style.border = "3px solid #dc3545";
+                    document.getElementById('validation_notes').innerHTML = " **  שם משפחה מכיל אות לא חוקית  ";
+                    return false;
+                }
+            }
+        }
+        var i = 0;
+        var k = 0;
+
+
+        // iligale sign user team
+        for (i = 0; i < userteam.length; i++) {
+            for (k = 0; k < nosign.length; k++) {
+
+                if (userteam.charAt(i) == nosign.charAt(k)) {
+                    document.getElementById("team").style.border = "3px solid #dc3545";
+                    document.getElementById('validation_notes').innerHTML = " **  שם הצוות מכיל אות לא חוקית  ";
+                    return false;
+                }
+            }
+        }
+
+        //user phone only numbers
+        var i = 0;
+        for (i = 0; i < userphone.length; i++) {
+            if (userphone.charAt(i) >= "0" && userphone.charAt(i) <= "9" && userphone.length == "10") {
+                
+            }
+            else {
+                document.getElementById("user_phone").style.border = "3px solid #dc3545";
+                document.getElementById('validation_notes').innerHTML = " **  מספר טלפון חייב להכיל רק מספרים  ";
+                return false;
+            }
+            
+        }
+
+        senduserdetails();
+
+
+    }
+    
+
+
+
+    function senduserdetails() {
+
+
+
+        var user = firebase.auth().currentUser;
+
+        var userUID = user.uid;
+        var threechar = document.getElementById("user_phone").value.slice(0, 3);
+        var restnumber = document.getElementById("user_phone").value.slice(3, 11);
+        var phoneNumber = threechar + "-" + restnumber;
+        var displayname = document.getElementById("username").value + " " + document.getElementById("user_last_name").value;
+        var team = "צוות" + " " + document.getElementById("team").value;
+
+        edituser(userUID, displayname, team, phoneNumber);
+        // window.location.replace("Homepage.html");
+        // add user to user db
+        // addUser(userUID, phoneNumber, displayname, team);
+        //add id to the konan db
+        //addKonan(userUID);
+        //update user infos
+
+
+
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>

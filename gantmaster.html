@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script src="DatabaseHandling.js"></script>
+    <script src="firebase.js"></script>
+    <!-- firebase -->
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+
+    <!-- costum css -->
+    <link rel="stylesheet" href="style.css">
+
+
+    <!-- costum css -->
+
+
+    <script>
+
+        initializeFirebase();
+
+    </script>
+    <!-- if user not logged in -->
+    <script>
+
+
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                var userid = firebase.auth().currentUser.uid;
+                getUser(userid)
+
+                    .then(function (user) {
+                        if (user.name != ("תומר למפרט" || "נתנאל אלמליח" || "נתנאל אהרון")) {
+                            window.location.replace("index.html");
+
+                        }
+
+                    });
+
+
+            }
+            else {
+                window.location.replace("login.html");
+            }
+
+
+        });
+    </script>
+    <!-- if user not logged in -->
+</head>
+
+<body class="cover">
+    <div class="content">
+        <!-- navigation bar -->
+        <!-- navigation bar -->
+        <div id="mySidenav" class="sidenav">
+            <p style="position: absolute; color: whitesmoke; top: 1px; left: 33px; font-size: 34px;">תפריט</p>
+
+            <a href="javascript:void(0)" class="closebtn clickanamation" onclick="closeNav()">&times;</a>
+            <a href="index.html" class="clickanamation ">דף בית</a>
+            <a href="userprofile.html" class="clickanamation">פרופיל</a>
+            <a href="rescu.html" class="clickanamation">תרגולות</a>
+            <a href="generalinfo.html" class="clickanamation ">מידע כללי</a>
+            <a href="gant.html" class="clickanamation"> גאנט סגירות</a>
+            <a href="gantmaster.html" class="clickanamation visitpage"> עדכוון גאנט</a>
+
+        </div>
+        <!-- navigation bar -->
+
+        <!-- navigation bar -->
+
+
+
+        <div class="jumbotron curvy" style="text-align: center; margin-bottom: 0px; background-color:#343a40">
+
+            <!-- navigation bar -->
+            <span class="navhamburger clickanamation" onclick="openNav()">&#9776; </span>
+            <!-- navigation bar -->
+            <!-- logout -->
+            <i class="fas fa-sign-out-alt clickanamation" style="font-size: 23px; position: absolute;left: 9px; color: #e8edf5;" onclick="logout()"></i>
+            <!-- logout -->
+            <h1 style=" color: #E9EFF6; display: inline-block;"> קריאת יעל</h1>
+            <p style=" color: #f3f3f3; opacity: .6; font-size: 16px; font-weight: 100; margin-bottom: 0rem;">" הרים הגבוהים ליעלים, סלעים מחסה לשפנים "</p>
+        </div>
+
+
+        <div id="divteam" class="centered" style="text-align: right; top: 50%; position: absolute;  width: 220px; height: 150px;">
+
+            <input type="text" id="name_soger" class="form-control centered" style="text-align: right;" placeholder="שם המפקד" required="">
+            <input type="text" id="week" class="form-control centered" style="text-align: right; margin-top: -80px" placeholder="מספר שבוע"
+                required="">
+
+            <button id="teambutton" class="btn btn-lg btn-primary btn-block" onclick="editweeksoger()" style="position: relative; top: 90%; color: white;">עדכן</button>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer" id="footer">
+            <p style="margin-bottom: 0px;padding-top: 7px;"> תומר למפרט - צוות פקאן &copy;</p>
+        </div>
+    </footer>
+    <script>
+
+
+        function editweeksoger() {
+
+            var name = document.getElementById('name_soger').value;
+            var week = document.getElementById('week').value;
+            var weekid = "week" + week;
+
+
+            editsoger(weekid, week, name);
+
+        }
+
+
+    </script>
+    <!-- navigation bar -->
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "200px";
+            document.getElementById("mySidenav").style.opacity = "1";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("mySidenav").style.opacity = "0";
+        }
+    </script>
+    <!-- navigation bar -->
+</body>
+
+</html>

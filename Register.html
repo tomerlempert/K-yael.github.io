@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- firebase -->
+    <script src="https://www.gstatic.com/firebasejs/5.3.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.2.0/firebase-firestore.js"></script>
+    <script src="DatabaseHandling.js"></script>
+    <script src="firebase.js"></script>
+    <!-- firebase -->
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+        crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+        crossorigin="anonymous"></script>
+    <!-- Font Awesome JS -->
+
+    <!-- costum css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- costum css -->
+
+
+    <script>
+
+        initializeFirebase();
+
+    </script>
+    <script>
+
+    </script>
+</head>
+
+<body class="cover">
+    <div class="content">
+        <!-- navigation bar -->
+        <div id="mySidenav" class="sidenav">
+            <p style="position: absolute; color: whitesmoke; top: 1px; left: 33px; font-size: 34px;">תפריט</p>
+
+            <a href="javascript:void(0)" class="closebtn clickanamation" onclick="closeNav()">&times;</a>
+            <a href="Login.html" class="clickanamation">התחברות</a>
+            <a href="#" class="clickanamation visitpage">הרשמה</a>
+            <!-- <a href="#"class="clickanamation">דרכי חילוץ</a>
+            <a href="#"class="clickanamation">תפקידים</a> -->
+
+        </div>
+        <!-- navigation bar -->
+
+
+
+        <div class="jumbotron curvy" style="text-align: center; margin-bottom: 0px; background-color:#343a40">
+
+            <!-- navigation bar -->
+            <span class="navhamburger clickanamation" onclick="openNav()">&#9776; </span>
+            <!-- navigation bar -->
+
+
+
+            <h1 style=" color: #E9EFF6; display: inline-block;"> קריאת יעל</h1>
+            <p style=" color: #f3f3f3; opacity: .6; font-size: 16px; font-weight: 100; margin-bottom: 0rem;">" הרים הגבוהים ליעלים, סלעים מחסה לשפנים "</p>
+        </div>
+        <div class="form-style centered openanimationc" id="securediv" style="width: 250px; height: 200px; top: 50%; position: absolute; ">
+            <!-- <input type="password" id="secure" class="form-control centered" style="text-align: right; width: 250px;" onfocus="focusfunc()"
+            placeholder="סיסמה" required="">
+        <button class="btn btn-lg btn-primary btn-block" onclick="sequrepassfunc();" style="margin-top: 56px; color: white; position: relative;">שלח</button> -->
+
+            <input type="password" id="secure" class="form-control" style="text-align: right; margin-top: 20px;" onfocus="focusfunc()"
+                placeholder="סיסמת אבטחה" required="">
+
+            <button class="btn btn-lg btn-primary btn-block" onclick="sequrepassfunc();" style="margin-top: 60px; color: white;">שלח</button>
+
+
+        </div>
+
+
+
+
+        <!-- <div class="form-style" style="width: 250px; position: relative;transform: translate(-50%, -50%); left: 50%; margin-top: 58%;"> -->
+        <div class="form-style centered openanimationc" id="onpassword" style="width: 250px; top: 45%; position: absolute; display: none">
+
+
+
+            <h1 style=" color: #E9EFF6; text-align: center;padding-bottom: 20px;">הרשם</h1>
+
+            <input type="text" id="user" class="form-control" style="text-align: right; margin-top: 20px;" onfocus="focusfunc()" placeholder="שם משתמש"
+                required="" autofocus="">
+
+            <input type="password" id="pass" class="form-control" style="text-align: right; margin-top: 20px;" onfocus="focusfunc()"
+                placeholder="סיסמה" required="">
+
+            <input type="password" id="conpass" class="form-control" style="text-align: right; margin-top: 20px;" onfocus="focusfunc()"
+                placeholder="חזור על הסיסמה" required="">
+
+            <button class="btn btn-lg btn-primary btn-block" onclick="validation();" style="margin-top: 26px; color: white;">שלח</button>
+
+            <p class="centered" id="validation_notes" style="position: absolute; text-align: center; font-size: 20px; top: 115%; width: 200px; color: #E9EFF6;"></p>
+
+
+
+
+        </div>
+    </div>
+    <footer>
+        <div class="footer" id="footer">
+            <p style="margin-bottom: 0px;padding-top: 7px;"> תומר למפרט - צוות פקאן &copy;</p>
+        </div>
+    </footer>
+
+
+    <script>
+        function sequrepassfunc() {
+            var pass = "topsecret";
+            var passseq = document.getElementById('secure').value;
+            if (pass == passseq) {
+                document.getElementById('onpassword').style.display = "block";
+                document.getElementById('securediv').style.display = "none";
+                // document.getElementById("user").style.border = "3px solid #dc3545";
+
+            }
+            if (pass != passseq) {
+
+                document.getElementById("secure").style.border = "3px solid #dc3545";
+
+            }
+
+        }
+        function validation() {
+
+            var uservald = document.getElementById('user').value;
+            var passvald = document.getElementById('pass').value;
+            var confirmpassvald = document.getElementById('conpass').value;
+            var i = 0;
+
+
+
+
+
+            if (uservald == "") {
+                document.getElementById("user").style.border = "3px solid #dc3545";
+                document.getElementById('validation_notes').innerHTML = " ** למלא שם";
+                return false;
+            }
+            else {
+                document.getElementById("user").style.border = "";
+            }
+
+
+            if ((uservald.length < 4) || (uservald.length > 20)) {
+                document.getElementById("user").style.border = "3px solid #dc3545";
+                document.getElementById('validation_notes').innerHTML = " ** אורך המשתמש חייב להיות בין 4-20";
+                return false;
+            }
+            else {
+                document.getElementById("user").style.border = "";
+            }
+
+            for (i = 0; i < uservald.length; i++) {
+                if (uservald.charAt(i) == "@") {
+                    document.getElementById("user").style.border = "3px solid #dc3545";
+                    document.getElementById('validation_notes').innerHTML = " **  שם משתמש מכיל אות לא חוקית  ";
+                    return false;
+                }
+                else {
+                    document.getElementById("user").style.border = "";
+                }
+            }
+
+
+
+
+
+
+
+
+
+            if (passvald == "") {
+                document.getElementById('validation_notes').innerHTML = " ** למלא סיסמה";
+                document.getElementById("pass").style.border = "3px solid #dc3545";
+                return false;
+            }
+            else {
+                document.getElementById("pass").style.border = "";
+            }
+            if ((passvald.length < 6) || (passvald.length > 20)) {
+                document.getElementById("pass").style.border = "3px solid #dc3545";
+                document.getElementById('validation_notes').innerHTML = " ** אורך הסיסמה חייב להיות בין 6-20";
+                return false;
+            }
+            else {
+                document.getElementById("pass").style.border = "";
+            }
+
+
+            if (passvald != confirmpassvald) {
+                document.getElementById("conpass").style.border = "3px solid #dc3545";
+                document.getElementById('validation_notes').innerHTML = " ** הסיסמאות לא זהות";
+                return false;
+            }
+            else {
+                document.getElementById("conpass").style.border = "";
+            }
+
+
+
+            if (confirmpassvald == "") {
+                document.getElementById("conpass").style.border = "3px solid #dc3545";
+                document.getElementById('validation_notes').innerHTML = " ** למלא חזרה על הסיסמה";
+                return false;
+            }
+            else {
+                document.getElementById("conpass").style.border = "";
+            }
+
+
+            signUp()
+                .then(function (user) {
+
+                    addUser(firebase.auth().currentUser.uid, "", "", "")
+                        .then(function (userUID) {
+                            document.getElementById('validation_notes').innerHTML = " נרשמת בהצלחה";
+
+                            window.location.replace("userinfo.html");
+                        })
+
+                        .catch(function (error) {
+                            // Handle Errors here.
+                            var errorCode = error.code;
+                            var errorMessage = error.message;
+
+                            alert(errorCode + ' ' + errorMessage);
+                        })
+
+                })
+
+                .catch(function (error) {
+
+                    // Handle Errors here.
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+
+                    alert(errorCode + ' ' + errorMessage);
+                })
+
+
+
+
+
+
+            // return true;
+
+        }
+
+        function focusfunc() {
+            if (document.getElementById("user").style.border != '') {
+
+
+                document.getElementById("user").style.border = '';
+                document.getElementById("user").value = '';
+
+            }
+            if (document.getElementById("pass").style.border != '') {
+
+
+                document.getElementById("pass").style.border = '';
+                document.getElementById("pass").value = '';
+
+            }
+            if (document.getElementById("conpass").style.border != '') {
+
+
+                document.getElementById("conpass").style.border = '';
+                document.getElementById("conpass").value = '';
+                document.getElementById("pass").value = '';
+
+
+            }
+            if (document.getElementById("secure").style.border != '') {
+                document.getElementById("secure").style.border = '';
+                document.getElementById("secure").value = '';
+
+            }
+        }
+    </script>
+    <!-- navigation bar -->
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "200px";
+            document.getElementById("mySidenav").style.opacity = "1";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("mySidenav").style.opacity = "0";
+        }
+    </script>
+    <!-- navigation bar -->
+</body>
+
+
+</html>
