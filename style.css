@@ -59,7 +59,8 @@ body {
   letter-spacing: 2px;
  }
  .footer p{
-   padding-top: 13px;
+   padding-top: 15px;
+   margin-bottom: 0px;
  }
 
  
@@ -396,6 +397,7 @@ body {
     position: absolute;
     width: 64px;
     height: 64px;
+    
   }
   .lds-roller div {
     animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
